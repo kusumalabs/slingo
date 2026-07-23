@@ -1,14 +1,3 @@
-"""
-SpinGrid Quest
-==============
-Game kasual orisinal bergaya Slingo (slot + bingo) yang dibangun sepenuhnya
-dengan Python & Streamlit. Semua aset visual, nama, dan identitas game
-adalah orisinal — tidak ada elemen berhak cipta pihak ketiga yang disalin.
-
-Jalankan secara lokal:
-    streamlit run main.py
-"""
-
 from __future__ import annotations
 
 import random
@@ -472,15 +461,9 @@ def render_sidebar() -> None:
     with st.sidebar:
         st.markdown("### ⚙️ Pengaturan")
 
+        st.markdown(f"**Tingkat Kesulitan:** {st.session_state.difficulty}")
         if st.session_state.game_status == "setup":
-            st.selectbox(
-                "Tingkat Kesulitan",
-                options=list(DIFFICULTY_SETTINGS.keys()),
-                key="difficulty",
-                help="Menentukan jumlah spin dan peluang simbol bonus.",
-            )
-        else:
-            st.markdown(f"**Tingkat Kesulitan:** {st.session_state.difficulty}")
+            st.caption("Pilih tingkat kesulitan pada layar utama, lalu klik Mulai Permainan.")
 
         st.checkbox("🎬 Efek Animasi", key="animations_on")
         st.checkbox("🔊 Suara (placeholder)", key="sound_on",
@@ -556,6 +539,7 @@ def render_setup_screen() -> None:
         index=list(DIFFICULTY_SETTINGS.keys()).index(st.session_state.difficulty),
         horizontal=True,
         label_visibility="collapsed",
+        key="difficulty_radio",
     )
     settings = DIFFICULTY_SETTINGS[diff]
     st.caption(f"Jumlah spin: **{settings['spins']}** • Peluang simbol bonus per kolom: **{int(settings['bonus_prob']*100)}%**")
