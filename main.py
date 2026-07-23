@@ -1,3 +1,14 @@
+"""
+SpinGrid Quest
+==============
+Game kasual orisinal bergaya Slingo (slot + bingo) yang dibangun sepenuhnya
+dengan Python & Streamlit. Semua aset visual, nama, dan identitas game
+adalah orisinal — tidak ada elemen berhak cipta pihak ketiga yang disalin.
+
+Jalankan secara lokal:
+    streamlit run main.py
+"""
+
 from __future__ import annotations
 
 import random
@@ -125,14 +136,15 @@ def is_full_house(marked: List[List[bool]]) -> bool:
 # =============================================================================
 
 def init_app_state() -> None:
-    """Inisialisasi state aplikasi yang hanya boleh dibuat sekali per sesi browser."""
-    if "app_initialized" not in st.session_state:
-        st.session_state.app_initialized = True
-        st.session_state.game_status = "setup"  # setup -> playing -> over / won
-        st.session_state.difficulty = "Normal"
-        st.session_state.high_score = 0
-        st.session_state.animations_on = True
-        st.session_state.sound_on = False
+    """Inisialisasi state aplikasi. Menggunakan pengecekan per-key (bukan satu
+    flag tunggal) agar tetap tangguh terhadap sesi browser lama yang masih
+    terhubung saat kode di-redeploy (mis. di Streamlit Community Cloud)."""
+    st.session_state.setdefault("game_status", "setup")  # setup -> playing -> over / won
+    st.session_state.setdefault("difficulty", "Normal")
+    st.session_state.setdefault("high_score", 0)
+    st.session_state.setdefault("animations_on", True)
+    st.session_state.setdefault("sound_on", False)
+    if "board" not in st.session_state:
         _reset_round_state()
 
 
